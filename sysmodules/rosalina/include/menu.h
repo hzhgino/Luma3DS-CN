@@ -39,6 +39,7 @@
 
 #define CORE_APPLICATION  0
 #define CORE_SYSTEM       1
+#define MAIN_PER_MENU_PAGE 8
 
 typedef enum MenuItemAction {
     MENU_END = 0,
@@ -61,7 +62,7 @@ typedef struct MenuItem {
 typedef struct Menu {
     const char *title;
 
-    MenuItem items[16];
+    MenuItem items[32];
 } Menu;
 
 extern bool isN3DS;
@@ -79,6 +80,7 @@ u32 waitCombo(void);
 
 bool menuCheckN3ds(void);
 u32 menuCountItems(const Menu *menu);
+u32 numItemsWithoutHidden(const Menu *menu);
 
 MyThread *menuCreateThread(void);
 void    menuEnter(void);

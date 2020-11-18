@@ -92,8 +92,8 @@ void initSystem(void)
     menuCombo = out == 0 ? DEFAULT_MENU_COMBO : (u32)out;
 
     miscellaneousMenu.items[0].title = Luma_SharedConfig->hbldr_3dsx_tid == HBLDR_DEFAULT_3DSX_TID ?
-        "Switch the hb. title to the current app." :
-        "Switch the hb. title to hblauncher_loader";
+        "将当前应用替换为homebrew" :
+        "将hblauncher_loader应用替换为homebrew";
 
     for(res = 0xD88007FA; res == (Result)0xD88007FA; svcSleepThread(500 * 1000LL))
     {
@@ -268,7 +268,7 @@ int main(void)
 
     if(R_FAILED(svcCreateEvent(&preTerminationEvent, RESET_STICKY)))
         svcBreak(USERBREAK_ASSERT);
-
+    ReadFont2Mem();
     Draw_Init();
     Cheat_SeedRng(svcGetSystemTick());
 

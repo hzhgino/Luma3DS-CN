@@ -33,12 +33,12 @@
 #include "ifile.h"
 
 Menu sysconfigMenu = {
-    "System configuration menu",
+    "硬件设置",
     {
-        { "Control Wireless connection", METHOD, .method = &SysConfigMenu_ControlWifi },
-        { "Toggle LEDs", METHOD, .method = &SysConfigMenu_ToggleLEDs },
-        { "Toggle Wireless", METHOD, .method = &SysConfigMenu_ToggleWireless },
-        { "Toggle Power Button", METHOD, .method=&SysConfigMenu_TogglePowerButton },
+        { "WIFI连接", METHOD, .method = &SysConfigMenu_ControlWifi },
+        { "LED开关", METHOD, .method = &SysConfigMenu_ToggleLEDs },
+        { "WIFI开关", METHOD, .method = &SysConfigMenu_ToggleWireless },
+        { "电源键开关", METHOD, .method=&SysConfigMenu_TogglePowerButton },
         {},
     }
 };
@@ -55,11 +55,11 @@ void SysConfigMenu_ToggleLEDs(void)
     do
     {
         Draw_Lock();
-        Draw_DrawString(10, 10, COLOR_TITLE, "System configuration menu");
-        Draw_DrawString(10, 30, COLOR_WHITE, "Press A to toggle, press B to go back.");
-        Draw_DrawString(10, 50, COLOR_RED, "WARNING:");
-        Draw_DrawString(10, 60, COLOR_WHITE, "  * Entering sleep mode will reset the LED state!");
-        Draw_DrawString(10, 70, COLOR_WHITE, "  * LEDs cannot be toggled when the battery is low!");
+        Draw_DrawString(10, 10, COLOR_TITLE, "LED开关");
+        Draw_DrawString(10, 30, COLOR_WHITE, "按A切换，按B返回。");
+        Draw_DrawString(10, 50, COLOR_RED, "警告：");
+        Draw_DrawString(10, 70, COLOR_WHITE, "  * 进入休眠模式将重置LED状态！");
+        Draw_DrawString(10, 90, COLOR_WHITE, "  * 提示系统电量低的LED灯不能被关闭。");
 
         Draw_FlushFramebuffer();
         Draw_Unlock();
@@ -116,22 +116,22 @@ void SysConfigMenu_ToggleWireless(void)
     do
     {
         Draw_Lock();
-        Draw_DrawString(10, 10, COLOR_TITLE, "System configuration menu");
-        Draw_DrawString(10, 30, COLOR_WHITE, "Press A to toggle, press B to go back.");
+        Draw_DrawString(10, 10, COLOR_TITLE, "WIFI开关");
+        Draw_DrawString(10, 30, COLOR_WHITE, "按A切换，按B返回。");
 
         u8 wireless = (*(vu8 *)((0x10140000 | (1u << 31)) + 0x180));
 
         if(nwmRunning)
         {
-            Draw_DrawString(10, 50, COLOR_WHITE, "Current status:");
-            Draw_DrawString(100, 50, (wireless ? COLOR_GREEN : COLOR_RED), (wireless ? " ON " : " OFF"));
+            Draw_DrawString(10, 50, COLOR_WHITE, "当前状态：");
+            Draw_DrawString(90, 50, (wireless ? COLOR_GREEN : COLOR_RED), (wireless ? " 开启 " : " 关闭"));
         }
         else
         {
-            Draw_DrawString(10, 50, COLOR_RED, "NWM isn't running.");
-            Draw_DrawString(10, 60, COLOR_RED, "If you're currently on Test Menu,");
-            Draw_DrawString(10, 70, COLOR_RED, "exit then press R+RIGHT to toggle the WiFi.");
-            Draw_DrawString(10, 80, COLOR_RED, "Otherwise, simply exit and wait a few seconds.");
+            Draw_DrawString(10, 50, COLOR_RED, "NWM 未运行。");
+            Draw_DrawString(10, 70, COLOR_RED, "如果你当前在测试菜单，");
+            Draw_DrawString(10, 90, COLOR_RED, "退出然后按 R+RIGHT 去切换WiFi。");
+            Draw_DrawString(10, 110, COLOR_RED, "否则直接退出并稍等片刻再试。");
         }
 
         Draw_FlushFramebuffer();
@@ -153,16 +153,16 @@ void SysConfigMenu_ToggleWireless(void)
 
 void SysConfigMenu_UpdateStatus(bool control)
 {
-    MenuItem *item = &sysconfigMenu.items[3];
+    MenuItem *item = &sysconfigMenu.items[0];
 
     if(control)
     {
-        item->title = "Control Wireless connection";
+        item->title = "WIFI连接";
         item->method = &SysConfigMenu_ControlWifi;
     }
     else
     {
-        item->title = "Disable forced wireless connection";
+        item->title = "断开WIFI连接";
         item->method = &SysConfigMenu_DisableForcedWifiConnection;
     }
 }
@@ -203,9 +203,9 @@ static bool SysConfigMenu_ForceWifiConnection(int slot)
     char infoString[80] = {0};
     u32 infoStringColor = forcedConnection ? COLOR_GREEN : COLOR_RED;
     if(forcedConnection)
-        sprintf(infoString, "Succesfully forced a connection to: %s", ssid);
+        sprintf(infoString, "成功强制连接到：%s", ssid);
     else
-       sprintf(infoString, "Failed to connect to slot %d", slot + 1);
+       sprintf(infoString, "连接到WIFI插槽%d失败", slot + 1);
 
     Draw_Lock();
     Draw_ClearFramebuffer();
@@ -215,9 +215,9 @@ static bool SysConfigMenu_ForceWifiConnection(int slot)
     do
     {
         Draw_Lock();
-        Draw_DrawString(10, 10, COLOR_TITLE, "System configuration menu");
+        Draw_DrawString(10, 10, COLOR_TITLE, "WIFI连接");
         Draw_DrawString(10, 30, infoStringColor, infoString);
-        Draw_DrawString(10, 40, COLOR_WHITE, "Press B to go back.");
+        Draw_DrawString(10, 70, COLOR_WHITE, "按B返回。");
 
         Draw_FlushFramebuffer();
         Draw_Unlock();
@@ -248,11 +248,11 @@ void SysConfigMenu_TogglePowerButton(void)
     do
     {
         Draw_Lock();
-        Draw_DrawString(10, 10, COLOR_TITLE, "System configuration menu");
-        Draw_DrawString(10, 30, COLOR_WHITE, "Press A to toggle, press B to go back.");
+        Draw_DrawString(10, 10, COLOR_TITLE, "电源键开关");
+        Draw_DrawString(10, 30, COLOR_WHITE, "按A切换，按B返回。");
 
-        Draw_DrawString(10, 50, COLOR_WHITE, "Current status:");
-        Draw_DrawString(100, 50, (((mcuIRQMask & 0x00000001) == 0x00000001) ? COLOR_RED : COLOR_GREEN), (((mcuIRQMask & 0x00000001) == 0x00000001) ? " DISABLED" : " ENABLED "));
+        Draw_DrawString(10, 50, COLOR_WHITE, "当前状态：");
+        Draw_DrawString(90, 50, (((mcuIRQMask & 0x00000001) == 0x00000001) ? COLOR_RED : COLOR_GREEN), (((mcuIRQMask & 0x00000001) == 0x00000001) ? " 禁用 " : " 启用 "));
 
         Draw_FlushFramebuffer();
         Draw_Unlock();
@@ -286,10 +286,10 @@ void SysConfigMenu_ControlWifi(void)
     do
     {
         Draw_Lock();
-        Draw_DrawString(10, 10, COLOR_TITLE, "System configuration menu");
-        Draw_DrawString(10, 30, COLOR_WHITE, "Press A to force a connection to slot:");
-        Draw_DrawString(10, 40, COLOR_WHITE, slotString);
-        Draw_DrawString(10, 60, COLOR_WHITE, "Press B to go back.");
+        Draw_DrawString(10, 10, COLOR_TITLE, "WIFI连接");
+        Draw_DrawString(10, 30, COLOR_WHITE, "按A强制连接到插槽:");
+        Draw_DrawString(10, 50, COLOR_WHITE, slotString);
+        Draw_DrawString(10, 70, COLOR_WHITE, "按B返回。");
 
         Draw_FlushFramebuffer();
         Draw_Unlock();
@@ -348,8 +348,8 @@ void SysConfigMenu_DisableForcedWifiConnection(void)
     do
     {
         Draw_Lock();
-        Draw_DrawString(10, 10, COLOR_TITLE, "System configuration menu");
-        Draw_DrawString(10, 30, COLOR_WHITE, "Forced connection successfully disabled.\nNote: auto-connection may remain broken.");
+        Draw_DrawString(10, 10, COLOR_TITLE, "断开WIFI连接");
+        Draw_DrawString(10, 30, COLOR_WHITE, "断开WIFI连接成功。");
 
         u32 pressed = waitInputWithTimeout(1000);
         if(pressed & KEY_B)
