@@ -37,6 +37,7 @@
 #include "ifile.h"
 
 #define KERNPA2VA(a)            ((a) + (GET_VERSION_MINOR(osGetKernelVersion()) < 44 ? 0xD0000000 : 0xC0000000))
+#define getbit(x,y) ((x) >> (y)&1)
 
 static u32 gpuSavedFramebufferAddr1, gpuSavedFramebufferAddr2, gpuSavedFramebufferFormat, gpuSavedFramebufferStride, gpuSavedFillColor;
 static u32 framebufferCacheSize;
@@ -82,6 +83,67 @@ void Draw_Lock(void)
 void Draw_Unlock(void)
 {
     RecursiveLock_Unlock(&lock);
+}
+
+
+int NumberOfHotKey(u32 n)
+{
+    int count = 0;
+    for(int i = 0; i < 32; i++){
+        if(getbit(n,i) == 1){
+            count++;
+        }
+    }
+    return count;
+}
+
+
+void Draw_CheatHotKey(u32 posY,u32 color,u32 keycode){
+    u16 *const fb = (u16 *)FB_BOTTOM_VRAM_ADDR;
+    //11111111000100001100111111111111
+    uint16_t offset[] = {0,16,32,48,64,80,96,112,128,144,160,176,368,368,192,208,368,368,368,368,224,368,368,368,240,256,272,288,304,320,336,352};
+    s32 charWidth = 16;
+    int hkCount = NumberOfHotKey(keycode);
+    u32 posX = SCREEN_BOT_WIDTH - hkCount * 20 - 16;
+    u16 printarr[hkCount];
+    for(int i = 0,y = 0;i<32;i++){
+        if(getbit(keycode,i) == 1){
+            //if key is invalid
+            if(offset[i] == 368){
+                posX = SCREEN_BOT_WIDTH - 36;
+                s32 y;
+                for(y = 0; y < 16; y++)
+                {
+                    uint16_t charBit = keyfont[368 + y];
+                    for(s32 x = 16; x > 16 - charWidth; x--)
+                    {
+                        u32 screenPos = (posX * SCREEN_BOT_HEIGHT * 2 + (SCREEN_BOT_HEIGHT - y - posY - 1) * 2) + (15 - x) * 2 * SCREEN_BOT_HEIGHT;
+                        u32 pixelColor = ((charBit >> (x-1)) & 1) ? COLOR_RED : COLOR_BLACK;
+                        fb[screenPos / 2] = pixelColor;
+                    }
+                }
+                return;
+            }else{
+                printarr[y] = offset[i];
+                y++;
+            }
+        }
+    }
+    for(int i = hkCount; i > 0; i--){
+        u16 charPos = printarr[i-1];
+        s32 y;
+        for(y = 0; y < 16; y++)
+        {
+            uint16_t charBit = keyfont[charPos + y];
+            for(s32 x = 16; x > 16 - charWidth; x--)
+            {
+                u32 screenPos = (posX * SCREEN_BOT_HEIGHT * 2 + (SCREEN_BOT_HEIGHT - y - posY - 1) * 2) + (15 - x) * 2 * SCREEN_BOT_HEIGHT;
+                u32 pixelColor = ((charBit >> (x-1)) & 1) ? color : COLOR_BLACK;
+                fb[screenPos / 2] = pixelColor;
+            }
+        }
+        posX += 20;
+    }
 }
 
 void Draw_DrawCharacter(u32 posX, u32 posY, u32 color, uint16_t character)

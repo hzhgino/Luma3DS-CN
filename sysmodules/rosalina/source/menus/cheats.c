@@ -50,6 +50,7 @@ typedef struct CheatDescription
     u32 codesCount;
     u32 storage1;
     u32 storage2;
+    u32 keyCode;
     u64 codes[0];
 } CheatDescription;
 
@@ -1568,6 +1569,7 @@ static CheatDescription* Cheat_AllocCheat()
     cheat->valid = 1;
     cheat->codesCount = 0;
     cheat->hasKeyCode = 0;
+    cheat->keyCode = 0;
     cheat->storage1 = 0;
     cheat->storage2 = 0;
     cheat->name[0] = '\0';
@@ -1830,6 +1832,7 @@ static void Cheat_LoadCheatsIntoMemory(u64 titleId)
                     if (((tmp >> 32) & 0xFFFFFFFF) == 0xDD000000)
                     {
                         cheat->hasKeyCode = 1;
+                        cheat->keyCode = (u32)tmp;
                     }
                 }
             }
@@ -1969,10 +1972,10 @@ void RosalinaMenu_Cheats(void)
                     char buf[65] = { 0 };
                     s32 j = page * CHEATS_PER_MENU_PAGE + i;
                     const char * checkbox = (cheats[j]->active ? "[开]" : "[关]");
-                    const char * keyAct = (cheats[j]->hasKeyCode ? "*" : " ");
-                    sprintf(buf, "%s%s%s", checkbox, keyAct, cheats[j]->name);
+                    sprintf(buf, "%s%s", checkbox, cheats[j]->name);
                     if(cheats[j]->hasKeyCode){
                         Draw_DrawString(32, 48 + i * (SPACING_Y+4), COLOR_WHITE, buf);
+                        Draw_CheatHotKey(48 + i * (SPACING_Y+4), COLOR_WHITE, cheats[j]->keyCode);
                     }else{
                         Draw_DrawString(32, 48 + i * (SPACING_Y+4), cheats[j]->valid ? COLOR_WHITE : COLOR_RED, buf);
                     };

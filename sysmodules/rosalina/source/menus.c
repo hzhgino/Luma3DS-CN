@@ -202,7 +202,7 @@ void RosalinaMenu_ChangeScreenBrightness(void)
             16,
             posY,
             COLOR_WHITE,
-            "当前亮度：%lu (min. %lu, max. %lu)\n\n",
+            "当前亮度：%lu (最小： %lu, 最大： %lu)\n\n",
             luminance,
             minLum,
             maxLum
