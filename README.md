@@ -2,6 +2,14 @@
 
 中文Luma3DS固件（带插件加载器）
 
+### 菜单展示
+<div style="float:left;">
+  <img style="margin:3px;" src="https://luma3ds-cn.oss-cn-hangzhou.aliyuncs.com/1.jpg" width = "225" height = "300" alt="主菜单一" align=center />
+  <img style="margin:3px;" src="https://luma3ds-cn.oss-cn-hangzhou.aliyuncs.com/2.jpg" width = "225" height = "300" alt="主菜单二" align=center />
+  <img style="margin:3px;" src="https://luma3ds-cn.oss-cn-hangzhou.aliyuncs.com/3.jpg" width = "225" height = "300" alt="金手指界面" align=center />
+  <img style="margin:3px;" src="https://luma3ds-cn.oss-cn-hangzhou.aliyuncs.com/5.jpg" width = "225" height = "300" alt="Action Replay" align=center />
+</div>
+
 ### 快速安装
 
 - 精简字库版`（推荐）`：
