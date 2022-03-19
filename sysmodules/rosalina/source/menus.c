@@ -96,15 +96,15 @@ void RosalinaMenu_ShowDebugInfo(void)
         Draw_Lock();
         Draw_DrawString(10, 10, COLOR_TITLE, "Rosalina -- 调试信息");
 
-        u32 posY = Draw_DrawString(10, 30, COLOR_WHITE, memoryMap);
-        posY = Draw_DrawFormattedString(10, posY, COLOR_WHITE, "Kernel ext PA: %08lx - %08lx\n\n", kextPa, kextPa + kextSize);
-        posY = Draw_DrawFormattedString(
+        u32 posY = Draw_DrawString_Littlefont(10, 30, COLOR_WHITE, memoryMap);
+        posY = Draw_DrawFormattedString_Littlefont(10, posY, COLOR_WHITE, "Kernel ext PA: %08lx - %08lx\n\n", kextPa, kextPa + kextSize);
+        posY = Draw_DrawFormattedString_Littlefont(
             10, posY, COLOR_WHITE, "Kernel version: %lu.%lu-%lu\n",
             GET_VERSION_MAJOR(kernelVer), GET_VERSION_MINOR(kernelVer), GET_VERSION_REVISION(kernelVer)
         );
         if (mcuFwVersion != 0)
         {
-            posY = Draw_DrawFormattedString(
+            posY = Draw_DrawFormattedString_Littlefont(
                 10, posY, COLOR_WHITE, "MCU FW version: %lu.%lu\n",
                 GET_VERSION_MAJOR(mcuFwVersion), GET_VERSION_MINOR(mcuFwVersion)
             );
@@ -113,7 +113,7 @@ void RosalinaMenu_ShowDebugInfo(void)
         if (R_SUCCEEDED(FSUSER_GetSdmcSpeedInfo(&speedInfo)))
         {
             u32 clkDiv = 1 << (1 + (speedInfo.sdClkCtrl & 0xFF));
-            posY = Draw_DrawFormattedString(
+            posY = Draw_DrawFormattedString_Littlefont(
                 10, posY, COLOR_WHITE, "SDMC speed: HS=%d %lukHz\n",
                 (int)speedInfo.highSpeedModeEnabled, SYSCLOCK_SDMMC / (1000 * clkDiv)
             );
@@ -121,7 +121,7 @@ void RosalinaMenu_ShowDebugInfo(void)
         if (R_SUCCEEDED(FSUSER_GetNandSpeedInfo(&speedInfo)))
         {
             u32 clkDiv = 1 << (1 + (speedInfo.sdClkCtrl & 0xFF));
-            posY = Draw_DrawFormattedString(
+            posY = Draw_DrawFormattedString_Littlefont(
                 10, posY, COLOR_WHITE, "NAND speed: HS=%d %lukHz\n",
                 (int)speedInfo.highSpeedModeEnabled, SYSCLOCK_SDMMC / (1000 * clkDiv)
             );
@@ -175,8 +175,8 @@ void RosalinaMenu_AboutCnVer(void)
         Draw_Lock();
         Draw_DrawString(16, 16, COLOR_TITLE, "关于中文版");
 
-        u32 posY = Draw_DrawString(16, 48, COLOR_WHITE, "  Luma3DS中文版基于目前最新的v10.2.1\n版本优化（插件加载器 By Nanquitas.）\n加入了中文字库并可支持中文金手指。");
-        posY = Draw_DrawString(16, posY + SPACING_Y + 4, COLOR_WHITE, "  感谢开源社区为此默默贡献的开发者们\n，目前该项目已经开源在我的Github上（\nhttps://github.com/CynricXu） ，欢迎\n一起优化！免费开源，禁止商业用途！  \n                            Cynric  \n                          2020/11/11");
+        u32 posY = Draw_DrawString(16, 48, COLOR_WHITE, "  Luma3DS中文版基于目前最新的v10.3版\n本优化（插件加载器 By Nanquitas.）加\n入了中文字库并可支持中文金手指。");
+        posY = Draw_DrawString(16, posY + SPACING_Y + 4, COLOR_WHITE, "  感谢开源社区为此默默贡献的开发者们\n，目前该项目已经开源在我的Github上（\nhttps://github.com/CynricXu） ，欢迎\n一起优化！免费开源，禁止商业用途！  \n                            Cynric  \n                          2022/03/20");
         Draw_FlushFramebuffer();
         Draw_Unlock();
     }

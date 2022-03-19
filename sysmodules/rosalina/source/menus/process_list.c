@@ -465,9 +465,9 @@ static void ProcessListMenu_MemoryViewer(const ProcessInfo *info)
                             u8 val = menus[menuMode].buf[address];
 
                             if(ascii)
-                                Draw_DrawString_Littlefont(x, y, color, "%c ", u8ToChar(val));
+                                Draw_DrawFormattedString_Littlefont(x, y, color, "%c ", u8ToChar(val));
                             else
-                                Draw_DrawString_Littlefont(x, y, color, "%.2x", val);
+                                Draw_DrawFormattedString_Littlefont(x, y, color, "%.2x", val);
                         }
                         else
                             Draw_DrawString_Littlefont(x, y, COLOR_WHITE, "  ");
