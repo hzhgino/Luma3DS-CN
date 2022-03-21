@@ -46,10 +46,10 @@ static RecursiveLock lock;
 
 #if ONLY_CN_FONTLIB != 0
 static u8 fontbin[0x599C0];
-char *fontlibpath = "/unifont_cn.bin";
+char *fontlibpath = "/luma/unifont_cn.bin";
 #else
 static u8 fontbin[0x1EFAC0];
-char *fontlibpath = "/unifont_full.bin";
+char *fontlibpath = "/luma/unifont_full.bin";
 #endif
 
 void ReadFont2Mem(){
