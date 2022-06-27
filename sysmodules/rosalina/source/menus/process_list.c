@@ -439,7 +439,7 @@ static void ProcessListMenu_MemoryViewer(const ProcessInfo *info)
                 }
                 else
                 {
-                    Draw_DrawString(10, infoY, COLOR_WHITE, "SELECT to dump memory, START to toggle ASCII view.");
+                    Draw_DrawString_Littlefont(10, infoY, COLOR_WHITE, "SELECT to dump memory, START to toggle ASCII view.");
                     if(ascii)
                         Draw_DrawString(10 + SPACING_X * 39, infoY, COLOR_GREEN, "ASCII");
                 }
