@@ -39,7 +39,7 @@ Menu sysconfigMenu = {
         { "LED开关", METHOD, .method = &SysConfigMenu_ToggleLEDs },
         { "WIFI开关", METHOD, .method = &SysConfigMenu_ToggleWireless },
         { "电源键开关", METHOD, .method=&SysConfigMenu_TogglePowerButton },
-        { "Toggle power to card slot", METHOD, .method=&SysConfigMenu_ToggleCardIfPower}
+        { "游戏卡槽开关", METHOD, .method=&SysConfigMenu_ToggleCardIfPower},
         {},
     }
 };
@@ -352,11 +352,11 @@ void SysConfigMenu_ToggleCardIfPower(void)
         if (R_FAILED(res)) cardIfStatus = false;
 
         Draw_Lock();
-        Draw_DrawString(10, 10, COLOR_TITLE, "System configuration menu");
-        u32 posY = Draw_DrawString(10, 30, COLOR_WHITE, "Press A to toggle, press B to go back.\n\n");
-        posY = Draw_DrawString(10, posY, COLOR_WHITE, "Inserting or removing a card will reset the status,\nand you'll need to reinsert the cart if you want to\nplay it.\n\n");
-        Draw_DrawString(10, posY, COLOR_WHITE, "Current status:");
-        Draw_DrawString(100, posY, !cardIfStatus ? COLOR_RED : COLOR_GREEN, !cardIfStatus ? " DISABLED" : " ENABLED ");
+        Draw_DrawString(10, 10, COLOR_TITLE, "游戏卡槽开关");
+        u32 posY = Draw_DrawString(10, 30, COLOR_WHITE, "按A切换,按B返回。\n\n");
+        posY = Draw_DrawString(10, posY, COLOR_WHITE, "插入或移除游戏卡将重置状态，如果你想运\n行该游戏，则需要重新插入。\n\n");
+        Draw_DrawString(10, posY, COLOR_WHITE, "当前状态：");
+        Draw_DrawString(90, posY, !cardIfStatus ? COLOR_RED : COLOR_GREEN, !cardIfStatus ? "禁用" : "启用 ");
 
         Draw_FlushFramebuffer();
         Draw_Unlock();
