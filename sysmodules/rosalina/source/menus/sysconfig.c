@@ -35,9 +35,9 @@
 Menu sysconfigMenu = {
     "硬件设置",
     {
+        { "WIFI开关", METHOD, .method = &SysConfigMenu_ToggleWireless },
         { "WIFI连接", METHOD, .method = &SysConfigMenu_ControlWifi },
         { "LED开关", METHOD, .method = &SysConfigMenu_ToggleLEDs },
-        { "WIFI开关", METHOD, .method = &SysConfigMenu_ToggleWireless },
         { "电源键开关", METHOD, .method=&SysConfigMenu_TogglePowerButton },
         { "游戏卡槽开关", METHOD, .method=&SysConfigMenu_ToggleCardIfPower},
         {},
@@ -131,7 +131,7 @@ void SysConfigMenu_ToggleWireless(void)
 
 void SysConfigMenu_UpdateStatus(bool control)
 {
-    MenuItem *item = &sysconfigMenu.items[0];
+    MenuItem *item = &sysconfigMenu.items[1];
 
     if(control)
     {

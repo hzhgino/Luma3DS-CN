@@ -45,21 +45,20 @@
 Menu rosalinaMenu = {
     "Rosalina 菜单",
     {
+        { "硬件设置", MENU, .menu = &sysconfigMenu },
         { "金手指", METHOD, .method = &RosalinaMenu_Cheats },
         { "屏幕截取", METHOD, .method = &RosalinaMenu_TakeScreenshot },
         { "屏幕色温调节", MENU, .menu = &screenFiltersMenu },
         { "背光亮度调节", METHOD, .method = &RosalinaMenu_ChangeScreenBrightness },
         { "", METHOD, .method = PluginLoader__MenuCallback},
         { "进程列表", METHOD, .method = &RosalinaMenu_ProcessList },
-        { "硬件设置", MENU, .menu = &sysconfigMenu },
         { "其他设置", MENU, .menu = &miscellaneousMenu },
+        //第二页
+        { "关机", METHOD, .method = &RosalinaMenu_PowerOff },
+        { "重启", METHOD, .method = &RosalinaMenu_Reboot },
         { "New3DS系列选项", MENU, .menu = &N3DSMenu, .visibility = &menuCheckN3ds },
         { "调试器选项", MENU, .menu = &debuggerMenu },
         { "调试信息", METHOD, .method = &RosalinaMenu_ShowDebugInfo, .visibility = &rosalinaMenuShouldShowDebugInfo },
-        { "官方致谢", METHOD, .method = &RosalinaMenu_ShowCredits },
-        { "关于中文版", METHOD, .method = &RosalinaMenu_AboutCnVer },
-        { "重启", METHOD, .method = &RosalinaMenu_Reboot },
-        { "关机", METHOD, .method = &RosalinaMenu_PowerOff },
         {},
     }
 };
@@ -146,56 +145,8 @@ void RosalinaMenu_ShowDebugInfo(void)
     while(!(waitInput() & KEY_B) && !menuShouldExit);
 }
 
-void RosalinaMenu_ShowCredits(void)
-{
-    Draw_Lock();
-    Draw_ClearFramebuffer();
-    Draw_FlushFramebuffer();
-    Draw_Unlock();
 
-    do
-    {
-        Draw_Lock();
-        Draw_DrawString(16, 16, COLOR_TITLE, "Rosalina -- Luma3DS 官方致谢");
 
-        u32 posY = Draw_DrawString(16, 40, COLOR_WHITE, "Luma3DS (c) 2016-2022\nAuroraWright, TuxSH") + 8;
-
-        posY = Draw_DrawString(16, posY + SPACING_Y + 4, COLOR_WHITE, "3DSX 加载部分 —— fincs");
-        posY = Draw_DrawString(16, posY + SPACING_Y + 4, COLOR_WHITE, "网络与GDB调试部分 —— Stary");
-        posY = Draw_DrawString(16, posY + SPACING_Y + 4, COLOR_WHITE, "输入重定向 —— Stary & ShinyQuagsir");
-
-        posY += 2 * SPACING_Y;
-
-        Draw_DrawString(16, posY, COLOR_WHITE,
-            (
-                "特别感谢：\n  fincs，WinterMute，mtheall，piepie\n  62，Luma3DS贡献者, libctru贡献者，\n  和其他为Luma3DS默默付出的开发者们！"
-            ));
-
-        Draw_FlushFramebuffer();
-        Draw_Unlock();
-    }
-    while(!(waitInput() & KEY_B) && !menuShouldExit);
-}
-
-void RosalinaMenu_AboutCnVer(void)
-{
-    Draw_Lock();
-    Draw_ClearFramebuffer();
-    Draw_FlushFramebuffer();
-    Draw_Unlock();
-
-    do
-    {
-        Draw_Lock();
-        Draw_DrawString(16, 16, COLOR_TITLE, "关于中文版");
-
-        u32 posY = Draw_DrawString(16, 48, COLOR_WHITE, "  Luma3DS中文版基于目前最新的v11.0版\n本优化（插件加载器 By Nanquitas.）加\n入了中文字库并可支持中文金手指。");
-        posY = Draw_DrawString(16, posY + SPACING_Y + 4, COLOR_WHITE, "  感谢开源社区为此默默贡献的开发者们\n，目前该项目已经开源在我的Github上（\nhttps://github.com/CynricXu） ，欢迎\n一起优化！免费开源，禁止商业用途！  \n                            Cynric  \n                          2022/06/27");
-        Draw_FlushFramebuffer();
-        Draw_Unlock();
-    }
-    while(!(waitInput() & KEY_B) && !menuShouldExit);
-}
 
 void RosalinaMenu_Reboot(void)
 {

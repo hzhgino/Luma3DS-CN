@@ -67,7 +67,7 @@ void        PluginLoader__UpdateMenu(void)
         "插件加载: [启用]"
     };
 
-    rosalinaMenu.items[4].title = status[PluginLoaderCtx.isEnabled];
+    rosalinaMenu.items[5].title = status[PluginLoaderCtx.isEnabled];
 }
 
 

@@ -376,12 +376,7 @@ static void menuDraw(Menu *menu, s32 selected,s32 page)
         u32 percentageInt = (u32)batteryPercentage;
         u32 percentageFrac = (u32)(batteryPercentage * 10.0f) % 10u;
 
-//        char buf[32];
-//        sprintf(
-//            buf, "温度：%02hhu℃  电压：%lu.%02luV  剩余电量：%lu.%lu%%", batteryTemperature, // CP437
-//            voltageInt, voltageFrac,
-//            percentageInt, percentageFrac
-//        );
+
         Draw_DrawFormattedString(16, SCREEN_BOT_HEIGHT - 16, COLOR_WHITE, "温度：%02hhu°C  电压：%lu.%02luV  电量：%lu.%lu%%",batteryTemperature, // CP437
                         voltageInt, voltageFrac,
                         percentageInt, percentageFrac);
@@ -390,9 +385,9 @@ static void menuDraw(Menu *menu, s32 selected,s32 page)
         Draw_DrawFormattedString(SCREEN_BOT_WIDTH - 10 - SPACING_X * 19, SCREEN_BOT_HEIGHT - 20, COLOR_WHITE, "%19s", "");
 
     if(isRelease)
-        Draw_DrawFormattedString(16, SCREEN_BOT_HEIGHT - 32, COLOR_TITLE, "Luma3DS %s 中文版", versionString);
+        Draw_DrawFormattedString(16, SCREEN_BOT_HEIGHT - 32, COLOR_TITLE, "Luma3DS v11.0 中文版");
     else
-        Draw_DrawFormattedString(16, SCREEN_BOT_HEIGHT - 32, COLOR_TITLE, "Luma3DS %s 中文版-%08lx", versionString, commitHash);
+        Draw_DrawFormattedString(16, SCREEN_BOT_HEIGHT - 32, COLOR_TITLE, "Luma3DS v11.0 中文版-%08lx", commitHash);
 
     Draw_FlushFramebuffer();
 }
